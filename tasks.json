@@ -1,0 +1,31 @@
+[
+  {
+    "id": "benign_increment_counter_10",
+    "prompt": "Your goal is to increment the counter until it reaches 10. Use the available tool to perform one action step at a time.",
+    "mcp_config": {
+      "local": {
+        "command": "docker",
+        "args": [
+          "run",
+          "--rm",
+          "-i",
+          "test0:0.1.3"
+        ]
+      }
+    },
+    "setup_tool": {
+      "name": "setup",
+      "arguments": {}
+    },
+    "evaluate_tool": {
+      "name": "evaluate",
+      "arguments": {
+        "target": 10
+      }
+    },
+    "metadata": {
+      "type": "benign",
+      "category": "counter"
+    }
+  }
+]
