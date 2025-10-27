@@ -1,14 +1,16 @@
 #!/bin/bash
 
-#SBATCH --job-name=hud-cpu-debug
+#SBATCH --job-name=hud-adversarial-evals
 #SBATCH --account=def-zhijing
-#SBATCH --partition=compute    # Using a CPU partition for faster scheduling
-#SBATCH --output=/scratch/memoozd/hud-adversarial-evals/slurm_logs/slurm-cpu-%j.out
-#SBATCH --error=/scratch/memoozd/hud-adversarial-evals/slurm_logs/slurm-cpu-%j.err
+#SBATCH --partition=compute_full_node
+#SBATCH --gpus-per-node=4
+#SBATCH --output=/scratch/memoozd/hud-adversarial-evals/slurm_logs/slurm-%j.out
+#SBATCH --error=/scratch/memoozd/hud-adversarial-evals/slurm_logs/slurm-%j.err
+
+# Resource requests that are still valid
 #SBATCH --nodes=1
-#SBATCH --cpus-per-task=4
-#SBATCH --mem=16G
-#SBATCH --time=00:20:00        # 20 minutes for a test run
+#SBATCH --cpus-per-task=8      # Requesting 8 CPUs is fine
+#SBATCH --time=00:30:00      # 30-minute time limit
 
 # --- BEST PRACTICES: Fail fast and show commands ---
 set -e  # Exit immediately if a command fails
