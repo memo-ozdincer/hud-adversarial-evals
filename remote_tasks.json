@@ -6,7 +6,7 @@
         "url": "https://mcp.hud.so/v3/mcp",
         "headers": {
           "Authorization": "Bearer ${HUD_API_KEY}",
-          "Mcp-Image": "memoozdincer/test0:0.1.7"
+          "Mcp-Image": "memoozdincer/test0:0.1.10"
         }
       }
     },
