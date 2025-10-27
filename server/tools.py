@@ -2,7 +2,7 @@
 
 from hud.server import MCPRouter
 from hud.tools.types import EvaluationResult
-from server.shared import http_client
+from shared import http_client
 import logging
 
 router = MCPRouter()

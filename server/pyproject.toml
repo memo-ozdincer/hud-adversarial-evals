@@ -6,6 +6,8 @@ requires-python = ">=3.11"
 dependencies = [
     "hud-python>=0.4.54",
     "httpx>=0.28.1",
+    "fastapi",
+    "uvicorn"
 ]
 
 [build-system]

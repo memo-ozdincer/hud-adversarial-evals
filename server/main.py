@@ -1,7 +1,7 @@
 import sys
 import logging
 from hud.server import MCPServer
-from server.shared import http_client
+from shared import http_client
 
 # Configure logging to stderr
 logging.basicConfig(
@@ -17,7 +17,7 @@ for logger_name in ["httpx", "httpcore"]:
 mcp = MCPServer(name="test0-environment")
 
 # Include routers
-from server.tools import router as tools_router
+from tools import router as tools_router
 
 mcp.include_router(tools_router)
 
