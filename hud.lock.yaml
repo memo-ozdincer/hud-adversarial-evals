@@ -1,14 +1,14 @@
 version: '1.1'
 images:
-  local: test0:0.1.15
-  full: test0:0.1.15@sha256:8dc302f34d426cc43f296459f107b4f4d1b2c2524a455d426ac102c2fcb05a2c
+  local: test0:0.1.25
+  full: test0:0.1.25@sha256:37995056e0c7f6a4ff194e44dc59444b2f385ce7ddbe874cd25921d71cf908c5
   pushed: null
 build:
-  generatedAt: 2025-10-28T00:34:06.357417+00:00Z
+  generatedAt: 2025-10-28T04:07:01.233670+00:00Z
   hudVersion: 0.4.58
   directory: hud-adversarial-evals
-  version: 0.1.15
-  sourceHash: e0401538096acb9ab080fcea01bbe98f6e5f0f4ca9e015fca86335ed7bf4823c
+  version: 0.1.25
+  sourceHash: a247951035bfe81f2be3b1c71350cd740f92cf59e2461b8b634158c76f463ff8
   sourceFiles:
   - Dockerfile
   - server/README.md
@@ -21,7 +21,7 @@ build:
   - server/tools.py
   - server/uv.lock
 environment:
-  initializeMs: 28878
+  initializeMs: 9943
   toolCount: 8
   variables:
     _note: You can edit this section to add or modify environment variables. Provided

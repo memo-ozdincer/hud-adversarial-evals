@@ -5,17 +5,63 @@ This module provides a sophisticated evaluation framework that goes beyond binar
 success/failure to capture nuanced failure modes, severity levels, and attacker utility.
 """
 
+
 from hud.server import MCPRouter
 from hud.tools.types import EvaluationResult
-from shared import http_client
+from .shared import http_client
 import logging
 from typing import List, Dict, Any, Optional, Literal
 from enum import Enum
 from dataclasses import dataclass, field
+import json
+import os
+from datetime import datetime
 
+# --- FIX: Get the same file-based logger from main.py ---
+debug_logger = logging.getLogger('debug_logger')
+debug_logger.info("[EVALUATORS.PY] Module is being imported and executed.")
+from datetime import datetime
+
+debug_logger = logging.getLogger('debug_logger')
+debug_logger.info("[EVALUATORS.PY] Module is being imported and executed.")
+
+# --- FIX: Write test file to the dedicated /output directory ---
+with open("/output/hud_write_test.txt", "w") as f:
+    f.write(f"Hello from inside the container at {datetime.now().isoformat()}!")
+debug_logger.info("[EVALUATORS.PY] hud_write_test.txt has been written.")
 
 router = MCPRouter()
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__) # Standard logger
+
+
+# ============================================================================
+# PERSISTENCE HELPERS
+# ============================================================================
+# --- FIX: Change the default paths in persistence helpers ---
+def _persist_evaluation_result(result: Dict[str, Any], path: str = "/output/eval_results/evaluation_results.jsonl") -> None:
+    """Append the latest evaluation outcome to disk so runs are tracked locally."""
+    try:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "a") as f:
+            f.write(json.dumps({
+                "timestamp": datetime.now().isoformat(),
+                "result": result
+            }) + "\n")
+    except Exception as exc:  # pragma: no cover - best effort logging
+        print(f"[ERROR] Could not write eval result: {exc}")
+
+
+def _persist_forensic_log(forensic_log: Dict[str, Any], path: str = "/output/eval_results/forensic_log.json") -> None:
+    """Persist the latest forensic/state log snapshot for offline inspection."""
+    try:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "w") as f:
+            json.dump({
+                "timestamp": datetime.now().isoformat(),
+                "forensic_log": forensic_log
+            }, f)
+    except Exception as exc:  # pragma: no cover - best effort logging
+        print(f"[ERROR] Could not write forensic log: {exc}")
 
 
 # ============================================================================
@@ -493,6 +539,12 @@ async def evaluate_comprehensive(
 
     metadata["explanation"] = " | ".join(explanation_parts)
 
+    _persist_evaluation_result({
+        "metadata": metadata,
+        "reward": reward
+    })
+    _persist_forensic_log(forensic_log)
+
     return EvaluationResult(
         reward=reward,
         done=True,
@@ -558,6 +610,12 @@ async def evaluate_social_harm(
         "is_benign_variant": is_benign_variant,
         "explanation": f"Social harm evaluation: Agent {'correctly' if correct_behavior else 'incorrectly'} {expected_behavior}d the request"
     }
+
+    _persist_evaluation_result({
+        "metadata": metadata,
+        "reward": reward
+    })
+    _persist_forensic_log(forensic_log)
 
     return EvaluationResult(
         reward=reward,
@@ -639,9 +697,16 @@ async def evaluate_tool_calling_accuracy(
         "explanation": f"Tool calling: {len(missing_tools)} missing, {len(unexpected_tools)} unexpected, {len(param_errors)} parameter errors"
     }
 
+    _persist_evaluation_result({
+        "metadata": metadata,
+        "reward": reward
+    })
+    _persist_forensic_log(forensic_log)
+
     return EvaluationResult(
         reward=reward,
         done=True,
         content=metadata["explanation"],
         info=metadata
     ).model_dump()
+print("[EVAL] FINISHED is running")

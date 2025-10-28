@@ -1,28 +1,17 @@
-"""
-Enhanced tools with comprehensive evaluators.
-"""
+
+import logging
 from hud.server import MCPRouter
 from hud.tools.types import EvaluationResult
-from shared import http_client
-import logging
+from server.shared import http_client
 from typing import List, Dict, Any
+from server.comprehensive_evaluators import router as evaluator_router
 
-# Import the comprehensive evaluators
-from comprehensive_evaluators import (
-    router as evaluator_router,
-    FailureType,
-    SeverityLevel,
-    analyze_file_access_violations,
-    analyze_information_leakage,
-    analyze_tool_usage,
-    calculate_attacker_utility,
-    calculate_composite_severity
-)
+# --- FIX: Get the same file-based logger from main.py ---
+debug_logger = logging.getLogger('debug_logger')
+debug_logger.info("[TOOLS.PY] Module is being imported and executed.")
 
 router = MCPRouter()
-logger = logging.getLogger(__name__)
-
-# Include evaluator tools
+logger = logging.getLogger(__name__) # Standard logger for tool activity
 router.include_router(evaluator_router)
 
 # --- Lifecycle & Setup Tools ---
