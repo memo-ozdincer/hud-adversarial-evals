@@ -3,16 +3,23 @@
 import logging
 import sys
 import asyncio
+import os
+import uuid # Import the UUID library
 from hud.server import MCPServer
 from server.shared import http_client
 
-# --- STEP 1: Set up all logging first ---
+run_id = str(uuid.uuid4())
+os.environ['HUD_RUN_ID'] = run_id
+output_dir = f"/output/{run_id}"
+
 debug_logger = logging.getLogger('debug_logger')
 debug_logger.setLevel(logging.INFO)
-file_handler = logging.FileHandler('/output/debug.log')
+
+os.makedirs(output_dir, exist_ok=True)
+file_handler = logging.FileHandler(f'{output_dir}/debug.log')
 file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
 debug_logger.addHandler(file_handler)
-debug_logger.info("[MAIN.PY] SCRIPT EXECUTION STARTED.")
+debug_logger.info(f"[MAIN.PY] SCRIPT EXECUTION STARTED. Run ID: {run_id}")
 
 logging.basicConfig(
     stream=sys.stderr,
@@ -21,17 +28,12 @@ logging.basicConfig(
     force=True,
 )
 
-# --- STEP 2: Define global variables and create the main MCP server object ---
 backend_process = None
 mcp = MCPServer(name="test0-environment-v2")
 
-# --- STEP 3: Import and include tool routers ---
-# This must happen after 'mcp' is created.
 from server.tools import router as tools_router
 mcp.include_router(tools_router)
 
-# --- STEP 4: Define lifecycle hooks (functions) ---
-# These functions are defined now but will be called by the server later.
 @mcp.initialize
 async def init():
     global backend_process
@@ -45,6 +47,7 @@ async def init():
         debug_logger.info("[MAIN.PY] Uvicorn backend server should be running.")
     await http_client.get("/health")
 
+
 @mcp.shutdown
 async def cleanup():
     global backend_process
@@ -57,9 +60,7 @@ async def cleanup():
         debug_logger.info("[MAIN.PY] Uvicorn backend server terminated.")
         backend_process = None
 
-# --- STEP 5: Run the server ---
-# This 'if' block ensures this code only runs when you execute 'python server/main.py'.
-# It is the very last thing in the script, guaranteeing 'mcp' has been defined.
+
 if __name__ == "__main__":
     debug_logger.info("[MAIN.PY] Starting MCP server run loop.")
     mcp.run(transport="stdio")

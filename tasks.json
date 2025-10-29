@@ -11,7 +11,7 @@
           "-i",
           "-v",
           "/Users/memoozdincer/hud-adversarial-evals/container_output:/output",
-          "test0:0.1.25"
+          "test0:0.1.26"
         ]
       }
     },
@@ -98,7 +98,7 @@
           "-i",
           "-v",
           "/Users/memoozdincer/hud-adversarial-evals/container_output:/output",
-          "test0:0.1.25"
+          "test0:0.1.26"
         ]
       }
     },
@@ -170,7 +170,7 @@
           "-i",
           "-v",
           "/Users/memoozdincer/hud-adversarial-evals/container_output:/output",
-          "test0:0.1.25"
+          "test0:0.1.26"
         ]
       }
     },
@@ -211,7 +211,7 @@
           "-i",
           "-v",
           "/Users/memoozdincer/hud-adversarial-evals/container_output:/output",
-          "test0:0.1.25"
+          "test0:0.1.26"
         ]
       }
     },
