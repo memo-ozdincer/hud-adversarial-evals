@@ -16,10 +16,14 @@ for logger_name in ["httpx", "httpcore"]:
 # Create main MCP server
 mcp = MCPServer(name="test0-environment")
 
-# Include routers
-from tools import router as tools_router
+# Include routers and mount hubs
+from tools import router as tools_router, setup_hub, evaluate_hub
 
 mcp.include_router(tools_router)
+
+# Mount lifecycle hubs (hidden from agents)
+mcp.mount(setup_hub)
+mcp.mount(evaluate_hub)
 
 
 # Lifecycle hooks

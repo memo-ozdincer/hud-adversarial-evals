@@ -1,0 +1,34 @@
+# HUD Eval Configuration
+# This file configures default settings for the 'hud eval' command
+# Command-line arguments override these settings
+# Uncomment and modify the settings you want to change
+
+# Agent backend to use (claude, openai, vllm, gemini, or litellm)
+# agent=claude
+
+# Model name for the chosen agent
+# model=
+
+# Run the entire dataset (omit for single-task debug mode)
+# full=false
+
+# Maximum concurrent tasks (1-200 recommended, prevents rate limits, default: 30)
+# max_concurrent=30
+
+# Maximum steps per task (default: 10 for single, 50 for full)
+# max_steps=
+
+# Comma-separated list of allowed tools
+# allowed_tools=
+
+# Enable verbose output from the agent
+# verbose=false
+
+# Enable debug-level logs for maximum visibility
+# very_verbose=false
+
+# Base URL for vLLM server (when using --agent vllm)
+# vllm_base_url=
+
+# Number of times to run each task (similar to RL training, default: 1)
+# group_size=1
