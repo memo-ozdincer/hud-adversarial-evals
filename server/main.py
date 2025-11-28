@@ -29,11 +29,27 @@ mcp.mount(evaluate_hub)
 # Lifecycle hooks
 @mcp.initialize
 async def init():
-    """Check if the environment is healthy"""
-    if http_client:
-        await http_client.get("/health")
-    else:
+    """Check if the environment is healthy with retry logic"""
+    import asyncio
+
+    if not http_client:
         raise ValueError("http_client is not set")
+
+    # Retry health check with exponential backoff
+    max_retries = 10
+    for attempt in range(max_retries):
+        try:
+            await http_client.get("/health")
+            logging.info(f"Backend health check passed on attempt {attempt + 1}")
+            return
+        except Exception as e:
+            if attempt < max_retries - 1:
+                wait_time = 0.5 * (2 ** attempt)  # Exponential backoff: 0.5s, 1s, 2s, 4s...
+                logging.warning(f"Backend not ready (attempt {attempt + 1}/{max_retries}), retrying in {wait_time}s: {e}")
+                await asyncio.sleep(wait_time)
+            else:
+                logging.error(f"Backend failed to start after {max_retries} attempts")
+                raise
 
 
 @mcp.shutdown

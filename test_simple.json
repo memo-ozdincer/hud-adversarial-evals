@@ -1,0 +1,17 @@
+[
+  {
+    "id": "simple_test",
+    "prompt": "List all the tools you have access to.",
+    "mcp_config": {
+      "local": {
+        "command": "docker",
+        "args": [
+          "run",
+          "--rm",
+          "-i",
+          "test0:0.1.26"
+        ]
+      }
+    }
+  }
+]
