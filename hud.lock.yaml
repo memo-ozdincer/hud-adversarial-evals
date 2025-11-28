@@ -1,13 +1,13 @@
 version: '1.1'
 images:
-  local: test0:0.1.20
-  full: test0:0.1.20@sha256:db9e15aeff992f02e8a8f7bb994fcce5a78edcd1b052e87ae9049092b5a4e332
+  local: test0:0.1.21
+  full: test0:0.1.21@sha256:8daa2541fd9bb7815ee78dc8f0ce5b22290501905db5b2291fec0a610ff0ec83
   pushed: null
 build:
-  generatedAt: 2025-11-22T00:20:23.042750+00:00Z
-  hudVersion: 0.4.66
-  directory: ODILE-agentic-llm-evals
-  version: 0.1.20
+  generatedAt: 2025-11-28T14:04:26.376336+00:00Z
+  hudVersion: 0.4.68
+  directory: working_odile
+  version: 0.1.21
   sourceHash: 5566f9b5ec42925ab1d77f453421dacca812a20f09ed9abafca8532643c5e249
   sourceFiles:
   - Dockerfile
@@ -23,7 +23,7 @@ build:
   - server/tools.py
   - server/uv.lock
 environment:
-  initializeMs: 4153
+  initializeMs: 17121
   toolCount: 5
   variables:
     _note: You can edit this section to add or modify environment variables. Provided
